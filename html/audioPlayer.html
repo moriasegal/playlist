@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>My Play List</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="../css/style.css">
+    </head>
+    <body>
+        <main id="playerContainer">
+            <div id="player">
+                <div class = "playItem" style = "background-image: url(../img/piratesofthecaribbean.jpg)">
+                        <span class = "playItemSmall">
+                            <i class = "fa fa-play"></i>
+                        </span>
+
+                    <!--</span>-->
+                </div>
+                <div id="audioContainer" style = "Width:300px">
+                    <audio id = "audioPlayer" controls = "controls" autoplay= "autoplay">
+                        <!--<source src = "../songs/Pirates of the Caribbean - Soundtrack 15 - He's a Pirate.mp3" type= "audio/mpeg">-->
+                        Your browser does not support the audio element.
+                    </audio>
+                    <!--<span class="">-->
+                        <marquee>
+                            <!--Width = "300px" style = "background-color: black; color: white">-->
+                                pirates of the caribbean
+                        </marquee>
+                    <!--</span>-->
+                </div>
+            </div>
+            <ol class = "songsList">
+                <li>playlistsSongs[i].name</li>
+            </ol>
+        </main>
+        <aside>
+            <i class="fa fa-close"></i>
+            <i class = "fa fa-pencil"></i>
+        </aside>
+    </body>
+</html>
