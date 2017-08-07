@@ -1,8 +1,9 @@
 
 
 $(document).ready(function(event){
-    buildHeader();
     ajax(null, "api/playlist", 'GET').then(function(data) {
+        console.log(data.data);
+        buildHeader(data.data);
 //               data.data['0'].id;
                //var myJSON = JSON.stringify(data);
 //        console.log(data.data[data.data.length-1]);
@@ -13,64 +14,97 @@ $(document).ready(function(event){
     });
 });
 
-function buildHeader(){
-    var header = $('#header');
-    $('<i>', {
-        text:"  Add new playlist",
-        class: "fa fa-plus-circle",
-        click: function (e) {
-            var popup = new FormAddPopup("gfdg");
-            popup.build();
+function buildHeader(data){
+    var addPlaylist = $('#addPlaylist');
+    addPlaylist.click(function(e){
+        var popup = new FormAddPopup("add");
+        popup.build();
+    });
+    var search = $('.search');
+    search.keyup(function(){
+//        searchfun(search);
+        var playList=$('#playList');
+        playList.html("");
+        var counter = 0;
+        $.each(data, function(index, val){
+            var i = val.name.indexOf(search[0].value);
+            if(i !== -1){
+                buildViewPlaylist(val);
+                counter++;
+            }
+        });
+        if(!counter){
+            $('<h1>',{
+                text:"no matches",
+            }).appendTo(playList);
         }
-    }).appendTo(header);
+    });
+//    search.change(function(){
+////        searchfun(search);
+//        var playList=$('#playList');
+//        playList.html("");
+//        $.each(data, function(index, val){
+//            var i = val.name.indexOf(search[0].value);
+//            if(i !== -1){
+//                buildViewPlaylist(val);
+//            }
+//        });
+//    });
 }
+
+
+
+//function searchfun(search){
+//    console.log(search[0].value);
+//}
+
 
 function buildViewPlaylist(value){
 //   console.log(val);
-       var playList=$('#playList');            
-      
-       var item=$('<div>',{
-                class:"playItem",
-                //click:
-                "data-id":value.id,
-                css:{"background-image": 'url(img/'+value.image+')'},
+   var playList=$('#playList');            
+
+   var item=$('<div>',{
+            class:"playItem",
+            //click:
+            "data-id":value.id,
+            css:{"background-image": 'url(img/'+value.image+')'},
 //                text:"hi"
-       }).appendTo(playList);
-       
-       var albumTitle =$('<span>',{
-           text:value.name,
-           class:"albumTitle",
-       }).appendTo(item);
+   }).appendTo(playList);
+
+   var albumTitle =$('<span>',{
+       text:value.name,
+       class:"albumTitle",
+   }).appendTo(item);
 
 //        var name =$('<h1>',{
 //           text:value.name,
 ////                    +val.name
 //       }).appendTo(albumContainer);
-       albumTitle.circleType({ radius: 125});
-       
-       $('<i>',{
-           class:"fa fa-remove",
-           click: function () {
-                var popup = new DeletePopup("Are you sure you want to delete?", value.id);
-                popup.build();
-            }
-       }).appendTo(item);
-       
-       $('<i>',{
-           class:"fa fa-pencil",
-           click: function () {
-                var popup = new FormEditPopup(value.id);
-                popup.build();
-            }
-       }).appendTo(item);
-       
-       var playItemSmall=$('<span>',{
-           class:"playItemSmall"
-       }).appendTo(item);
-       
-       var playIcon=$('<i>',{
-           class:"fa fa-play",
-       }).appendTo(playItemSmall);
+   albumTitle.circleType({ radius: 125});
+
+   $('<i>',{
+       class:"fa fa-remove",
+       click: function () {
+            var popup = new DeletePopup("Are you sure you want to delete?", value.id);
+            popup.build();
+        }
+   }).appendTo(item);
+
+   $('<i>',{
+       class:"fa fa-pencil",
+       click: function () {
+            var popup = new FormEditPopup(value.id);
+            popup.build();
+        }
+   }).appendTo(item);
+
+   var playItemSmall=$('<span>',{
+       class:"playItemSmall"
+   }).appendTo(item);
+
+   var playIcon=$('<i>',{
+       class:"fa fa-play",
+   }).appendTo(playItemSmall);
        
        
 //       var playIcon2=$('<a>',{
@@ -83,18 +117,23 @@ function buildViewPlaylist(value){
 //           attr{"href": "http://www.freepik.com",
 //                "title": "Freepik"}</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY"
 //       }).appendTo(playIcon);
-       playIcon.click({param1: value},playAlbum);
+   playIcon.click({param1: value},playAlbum);
 //       removeIcon.click({param1: val.id},playAlbum);
 //       editIcon.click({param1: val.id},playAlbum);
 }
 
 function buildPlaylist(playlist2, playlistsSongs){
-    var playList=$('#playList');
-    playList.html("");
+    var body = $('body');
+    body.html("");
+    
+    var player=$('<div>',{
+        id: 'playList',
+    });
+    player.appendTo(body);
     
     var player_container = $('<div>',{
         class: "playerContainer",
-    }).appendTo(playList);
+    }).appendTo(player);
     
     var audio = $("<audio>",{
         id: "audioPlayer",
@@ -115,7 +154,7 @@ function buildPlaylist(playlist2, playlistsSongs){
     });
     var songslist = $('<ul>',{
         class: "songsList",
-    }).appendTo(playList);
+    }).appendTo(player);
     
     for (let i = 0; i < playlistsSongs.length; i++){
         $('<li>',{

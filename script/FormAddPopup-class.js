@@ -6,18 +6,19 @@ class FormAddPopup extends Popup {
 	}
 
 	build () {
-		super.build();
-		var divContainer = $('<div>').appendTo(this.popup.find('#popup_container'));
-                var self = this;
+            super.build();
+            var divContainer = $('<div>').appendTo(this.popup.find('#popup_container'));
+            var self = this;
 //		console.log('works');
-		
-		this.ajax('html/formPlaylistTitle.html')
-		.then(function (data) {
+
+            this.ajax('html/formPlaylistTitle.html')
+            .then(function (data) {
 //                    console.log(data);
-			var html = data;
+                var html = data;
 //			console.timeEnd('FormPopup')
-			divContainer.html(html);
+                divContainer.html(html);
             }).then(function () {
+                self.preview();
                 return new Promise(function (resolve) {
                         $('form').submit(function(e) {
                                 e.preventDefault();
@@ -26,13 +27,13 @@ class FormAddPopup extends Popup {
                 }).then(function(e) {
 //                    console.log(e.target);
                     var data = {
-                            name: $(e.target).find('input[name=name]').val(), 
-                            image: $(e.target).find('input[name=url]').val(), 
+                        name: $(e.target).find('input[name=name]').val(), 
+                        image: $(e.target).find('input[name=url]').val(), 
 //                            photo:$(e.target).find('input[name=photo]').val()
                     };
 //                    console.log(data);
                     self.addSongs($(e.target),data);
-
+                    
 //			 throw new RangeError('sdfsdfsd');
 //			return this.sendAjax('main.php', 'POST', data);
                 }.bind(this));
@@ -49,6 +50,20 @@ class FormAddPopup extends Popup {
 //			console.log(err)
 //		})
 	}
+        
+    preview(){
+        var playlistImg = $('#playlistImg');
+        var playlistUrl = $('#playlistUrl');
+        playlistUrl.change(function(){
+            console.log(playlistUrl[0].value);
+            if(playlistUrl[0].value){
+                playlistImg.attr("src", "img/"+playlistUrl[0].value);
+            } 
+            else{
+                playlistImg.attr("src", "img/preview.png");
+            }
+        });
+    }
 
 
     ajax(url,method,data) {
@@ -76,7 +91,7 @@ class FormAddPopup extends Popup {
         var self = this;
 //        console.log(form);
 //        console.log(newPlaylistObject);
-        var content = form.parent();
+        var content = form.parent().parent();
 	form.remove();
 //	console.log(content[0]);
 	this.ajax('html/formPlaylistSongs.html')

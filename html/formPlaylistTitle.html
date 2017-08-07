@@ -1,13 +1,20 @@
-
-
-<form class="titleForm">
-	<label>
-            <input type="text" placeholder="name" name="name" value="tt">
-	</label>
-	<label>
-		<input type="text" placeholder="url" name="url"> 
-	</label>
-	<label>
+<h2>Add New Playlist</h2>
+<div class="line-separator"></div>
+<main id="playlistTitleMain">
+    <form class="titleForm">
+        <div id="inputContainer">
+            <label for="playlistName">Playlist Name
+            </label>
+            <input id='playlistName' type="text" placeholder="name" name="name">
+            <label for="playlistUrl" >Playlist URL
+            </label>
+            <input type="text" placeholder="url" name="url" id="playlistUrl"> 
+        </div>
+        <div id="buttonContainerPlaylistTitle">
             <input type="submit" value="next" class="redButton">
-	</label>
-</form>
+            <input type="button" value="RESET FIELDS" class="redButton">
+
+        </div>
+    </form>
+    <img src ='img/preview.png' id="playlistImg"/>
+</main>

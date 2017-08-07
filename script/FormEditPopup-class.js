@@ -21,6 +21,7 @@ class FormEditPopup extends Popup {
             $('input[name=name]').val(data[1].data.name);
             $('input[name=url]').val(data[1].data.image);
         }).then(function () {
+            self.preview();
             return new Promise(function (resolve) {
                 $('form').submit(function(e) {
                     e.preventDefault();
@@ -60,6 +61,26 @@ class FormEditPopup extends Popup {
         });
     }
     
+    preview(){
+        var playlistImg = $('#playlistImg');
+        var playlistUrl = $('#playlistUrl');
+        this.playlistUrlAttr(playlistUrl[0].value, playlistImg);
+            
+        playlistUrl.change(function(){
+            console.log(playlistUrl[0].value);
+            this.playlistUrlAttr(playlistUrl[0].value, playlistImg);
+        }.bind(this));
+    }
+    
+    playlistUrlAttr(playlistUrl, playlistImg){
+        console.log(playlistUrl);
+        if(playlistUrl){
+                playlistImg.attr("src", "img/"+playlistUrl);
+            } 
+            else{
+                playlistImg.attr("src", "img/preview.png");
+            }
+    }
     
     
     addSongs(form){
@@ -68,7 +89,7 @@ class FormEditPopup extends Popup {
         var newPlaylistObject = {};
         var self = this;
         var id = this.id;
-        var content = form.parent();
+        var content = form.parent().parent();
 	form.remove();
 	Promise.all([this.ajax('html/formPlaylistSongs.html'),this.ajax("api/playlist/"+id+"/songs",'GET')])
         .then(function (data) {
@@ -76,7 +97,7 @@ class FormEditPopup extends Popup {
             return data;
         }).then(function (data) {
             for(var i=3; i<data[1].data.songs.length; i++){
-                addSong().appendTo(content.find('form #formSongsContainer'));
+                self.addSong().appendTo(content.find('form #formSongsContainer'));
             }
 
             return data;
@@ -93,7 +114,7 @@ class FormEditPopup extends Popup {
 //            $('input[name=url]').val(data[1].data.image);
         }).then(function() {
             content.find('#addFa-plus-square').click(function() {
-			addSong().appendTo(content.find('form #formSongsContainer'));
+                    addSong().appendTo(content.find('form #formSongsContainer'));
 		});
         }).then(function() {
 //            content.html(data);
@@ -126,32 +147,32 @@ class FormEditPopup extends Popup {
             });
         });
     }
+    addSong() {
+        var newSong = $('<div>',{
+            class:"newSong"
+        });
+
+        var songUrlLabel = $('<label>', {
+                text: "Song URL", 
+        }).appendTo(newSong);
+
+        $('<input>',{
+            type:"text",
+            class:"newSongUrl",
+            placeholder: "song url",
+        }).appendTo(songUrlLabel);
+
+        var songNameLabel = $('<label>', {
+                text: "Name", 
+        }).appendTo(newSong);
+
+        $('<input>',{
+            type:"text",
+            class:"newSongName",
+            placeholder: "song Name",
+        }).appendTo(songNameLabel);
+
+        return newSong;
+    }
 }
 
-function addSong() {
-    var newSong = $('<div>',{
-        class:"newSong"
-    });
-
-    var songUrlLabel = $('<label>', {
-            text: "Song URL", 
-    }).appendTo(newSong);
-
-    $('<input>',{
-        type:"text",
-        class:"newSongUrl",
-        placeholder: "song url",
-    }).appendTo(songUrlLabel);
-
-    var songNameLabel = $('<label>', {
-            text: "Name", 
-    }).appendTo(newSong);
-
-    $('<input>',{
-        type:"text",
-        class:"newSongName",
-        placeholder: "song Name",
-    }).appendTo(songNameLabel);
-
-    return newSong;
-}

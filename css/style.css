@@ -1,19 +1,80 @@
+:root{
+    --popup-color: rgb(98,98,98);
+    --border-color: rgb(235,235,235);
+}
+
 body{
     width: 80%;
     margin: 0 auto;
 }
+
+
+
+#header{
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+    min-width: 330px;
+}
+#custom-search-input {
+    margin:0;
+    margin-top: 10px;
+    padding: 0;
+    /*width: 200px;*/
+}
+
+#custom-search-input .search {
+    padding: 5px;
+    /*padding-right: 4px \9;*/
+    /*padding-left: 3px;*/
+    /*padding-left: 4px \9;*/
+    background-color: black;
+    color: white;
+    /* IE7-8 doesn't have border-radius, so don't indent the padding */
+
+    margin-bottom: 0;
+/*    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;*/
+}
+
+.search::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:white;
+}
+
+#custom-search-input .fa-search {
+    /*border: 0;*/
+    background: none;
+    /** belows styles are working good */
+    /*margin: 2px 5px;*/
+    /*margin-top: 2px;*/
+    position: relative;
+    left: -30px;
+    /* IE7-8 doesn't have border-radius, so don't indent the padding */
+/*    margin-bottom: 0;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;*/
+    color:rgb(105, 98, 102);
+}
+ 
+/*    .search:focus + button {
+        z-index: 3;   
+    }*/
+
+    
 #playList{
-display: flex;
-justify-content:center;
-flex-wrap:wrap;
-width: 100%;
-min-width: 240px;
-/*align-item:center;*/
+    display: flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    width: 100%;
+    min-width: 240px;
+    /*align-item:center;*/
 
 }
 
 .line-separator{
-    border-bottom:1px solid black;
+    border-bottom:0.8px solid var(--border-color);
     /*margin-bottom: 1rem;*/
 /*    margin-top: 5px;*/
 
@@ -27,6 +88,12 @@ h2{
     margin: 0.5rem 0;
 }
 
+#popup_container input{
+    border-color: var(--border-color);
+    border-width: 1px;
+    /*box-sizing:initial;*/
+}
+
 #popup {
     /*--popup-color: currentColor;*/
     position: fixed;
@@ -34,14 +101,34 @@ h2{
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0,0,0,.5);
+    background-color: rgba(0,0,0,0.75);
     /*color: var(--popup-color);*/
-    color: currentColor;
+    color: var(--popup-color);
+    /*font-weight:bold;*/
+    font-family: arial;
 }
+
 #popup_container {
     max-width: 80%;
     padding: 1rem;
     background-color: white;
+}
+
+#playlistTitleMain{
+    margin-top: 0.5rem;
+    display: flex;
+    justify-content:space-between;
+    /*align-items:flex-start;*/
+    /*align-content:flex-start;*/
+}
+
+#playlistImg{
+    width: 50%;
+    align-self:flex-start;
+}
+
+#remove_btn{
+  color: black;  
 }
 
 .deleteNav{
@@ -81,9 +168,12 @@ h2{
 .fa-play{
     font-size:3rem;
 }
-#playList > .playItem:hover {
+#playList > .playItem:hover{
    opacity: 1;
    
+}
+#playList > .playItem:hover .albumTitle{
+    opacity: 1;
 }
 
 .playItem .fa-remove, .playItem .fa-pencil{
@@ -113,7 +203,9 @@ h2{
    left: 7.5px;
    font-family: 'Zilla Slab', serif;
    font-size: 1.5rem;
-   font-weight: bold; 
+   font-weight: bold;
+   opacity: 0.85;
+   
        /*-40px 5px 0 7.5px;*/
 }
 span.playItemSmall{
@@ -137,11 +229,22 @@ span.playItemSmall{
     background-color: red;
 }
 
+.titleForm{
+    display: flex;
+    flex-direction:column;
+    justify-content:space-between;
+}
+
 .titleForm label {
     display: block;
+    /*margin-top: 0.5rem;*/
 }
-.titleForm label:not(:last-child) 
-{margin-bottom: 1rem;
+
+#buttonContainerPlaylistTitle{
+    margin-top: 5px;
+}
+.titleForm label:not(:first-child){
+    margin-top: 0.5rem;
 }
 
 #player{
